@@ -88,8 +88,13 @@ TaskQueue.prototype.isEmpty = function () {
  */
 TaskQueue.prototype.process = function () {
   var self = this;
+  var task = this.shiftOnProcess ? this._shift() : this.tasks[0];
 
-  this.processFn(this._shift(), function () {
+  this.processFn(task, function () {
+    if (!self.shiftOnProcess) {
+      self._shift();
+    }
+
     return self.isEmpty()
       ? null
       : self.process.call(self);

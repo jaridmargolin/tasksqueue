@@ -53,8 +53,7 @@ describe('task-queue.js', function () {
       assert.isTrue(this.queue.isEmpty());
       assert.deepEqual(this.processed, [1]);
       done();
-    }.bind(this), 1);
-    
+    }.bind(this), 100);
   });
 
   it('Should add to queue and process after current executing task.', function (done) {
@@ -65,7 +64,7 @@ describe('task-queue.js', function () {
       assert.isTrue(this.queue.isEmpty());
       assert.deepEqual(this.processed, [1, 2]);
       done();
-    }.bind(this), 1);
+    }.bind(this), 100);
   });
 
   it('Should add multiple tasks to queue.', function (done) {
@@ -78,7 +77,7 @@ describe('task-queue.js', function () {
       assert.isTrue(this.queue.isEmpty());
       assert.deepEqual(this.processed, [1, 2]);
       done();
-    }.bind(this), 1);
+    }.bind(this), 100);
   });
 
   it('Should not add duplicate entires to list.', function (done) {
@@ -91,7 +90,7 @@ describe('task-queue.js', function () {
       assert.isTrue(this.queue.isEmpty());
       assert.deepEqual(this.processed, [1]);
       done();
-    }.bind(this), 1);
+    }.bind(this), 100);
   });
 
   it('Should stop processing after last task.', function (done) {
@@ -99,13 +98,13 @@ describe('task-queue.js', function () {
 
     setTimeout(function () {
       this.queue.add({ val: 2 });
-    }.bind(this), 1);
+    }.bind(this), 100);
 
     setTimeout(function () {
       assert.isFalse(this.queue.isEmpty());
       assert.deepEqual(this.processed, [1]);
       done();
-    }.bind(this), 1);
+    }.bind(this), 100);
   });
 
   it('Should clear queue and indexes.', function () {
@@ -119,6 +118,13 @@ describe('task-queue.js', function () {
     assert.isTrue(this.queue.isEmpty());
     assert.deepEqual(this.queue.tasks, []);
     assert.deepEqual(this.queue.indexes, {});
+  });
+
+  it('Should clear on process when flag set.', function () {
+    this.queue.shiftOnProcess = true;
+    this.queue.add({ val: 1 }, true);
+
+    assert.deepEqual(this.queue.tasks, []);
   });
 
 });
