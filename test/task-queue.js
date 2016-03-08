@@ -108,6 +108,19 @@ describe('task-queue.js', function () {
     }.bind(this), 1);
   });
 
+  it('Should clear queue and indexes.', function () {
+    this.queue.add([
+      { id: 1, val: 1 },
+      { id: 2, val: 2 }
+    ]);
+
+    this.queue.clear();
+
+    assert.isTrue(this.queue.isEmpty());
+    assert.deepEqual(this.queue.tasks, []);
+    assert.deepEqual(this.queue.indexes, {});
+  });
+
 });
 
 

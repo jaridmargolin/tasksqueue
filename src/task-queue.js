@@ -96,6 +96,23 @@ TaskQueue.prototype.process = function () {
   });
 };
 
+/**
+ * @public
+ * @memberof TaskQueue
+ *
+ * @desc Clear all currently queued tasks.
+ *
+ * @example
+ * queue.clear();
+ */
+TaskQueue.prototype.clear = function () {
+  for (var i = 0, l = this.tasks.length; i < l; i++) {
+    delete this.indexes[this.tasks[i][this.indexName]];
+  }
+
+  this.tasks.length = 0;
+};
+
 
 /* -----------------------------------------------------------------------------
  * internal/helpers
