@@ -195,7 +195,7 @@ TaskQueue.prototype._push = function (task) {
  */
 TaskQueue.prototype._shift = function () {
   var task = this.tasks.shift();
-  delete this.indexes[task.indexName];
+  delete this.indexes[task[this.indexName]];
 
   return task;
 };

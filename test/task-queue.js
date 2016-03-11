@@ -89,6 +89,7 @@ describe('task-queue.js', function () {
     setTimeout(function () {
       assert.isTrue(this.queue.isEmpty());
       assert.deepEqual(this.processed, [1]);
+      assert.deepEqual(this.queue.indexes, {});
       done();
     }.bind(this), 100);
   });
