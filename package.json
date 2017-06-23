@@ -1,0 +1,35 @@
+{
+  "name": "task-queue.js",
+  "description": "Extensible async task queue.",
+  "author": "Jarid Margolin <jaridmargolin@gmail.com>",
+  "version": "1.0.0",
+  "license": "MIT",
+  "homepage": "https://github.com/jaridmargolin/task-queue.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaridmargolin/task-queue.js"
+  },
+  "bugs": {
+    "url": "https://github.com/jaridmargolin/task-queue.js/issues"
+  },
+  "main": "build/task-queue.js",
+  "module": "src/index.js",
+  "scripts": {
+    "build": "neutrino build",
+    "start": "neutrino test --watch",
+    "test": "neutrino test",
+    "view-cov": "neutrino view-cov",
+    "publish-cov": "neutrino publish-cov",
+    "build-docs": "neutrino build-docs",
+    "view-docs": "neutrino view-docs"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "neutrino": "^6.1.1",
+    "neutrino-preset-library": "0.1.0",
+    "sinon": "^2.3.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
