@@ -17,6 +17,7 @@
   "esnext": "src/index.js",
   "scripts": {
     "build": "neutrino build",
+    "view-build": "neutrino view-build",
     "start": "neutrino test --watch",
     "test": "neutrino test",
     "view-cov": "neutrino view-cov",
@@ -27,6 +28,6 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "neutrino": "^6.1.1",
-    "neutrino-preset-library": "0.2.0"
+    "neutrino-preset-library": "0.3.0"
   }
 }
