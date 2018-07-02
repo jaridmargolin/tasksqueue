@@ -4,7 +4,7 @@
  * TaskQueue
  * -------------------------------------------------------------------------- */
 
-export class TaskQueue {
+class TaskQueue {
   /**
    * @desc Extensible async task queue.
    *
@@ -34,7 +34,9 @@ export class TaskQueue {
    */
   add (tasks, processTask) {
     const isEmpty = this.isEmpty()
-    const result = Array.isArray(tasks) ? this._addTasks(tasks) : this._addTask(tasks)
+    const result = Array.isArray(tasks)
+      ? this._addTasks(tasks)
+      : this._addTask(tasks)
 
     if (isEmpty && processTask) {
       this.process()
@@ -68,9 +70,7 @@ export class TaskQueue {
         this._shift()
       }
 
-      return this.isEmpty()
-        ? null
-        : this.process()
+      return this.isEmpty() ? null : this.process()
     })
   }
 

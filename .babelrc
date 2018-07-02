@@ -1,0 +1,15 @@
+{
+  "env": {
+    "development": {
+      "plugins": ["external-helpers"],
+      "presets": [["env", {
+        "modules": false,
+        "targets": { "browsers": [">0.25% in US"] }
+      }]]
+    },
+    "test": {
+      "presets": [["env"]]
+    }
+  }
+}
+

@@ -1,33 +1,47 @@
 {
   "name": "task-queue.js",
-  "description": "Extensible async task queue.",
-  "author": "Jarid Margolin <jaridmargolin@gmail.com>",
   "version": "1.0.0",
-  "license": "MIT",
+  "author": "Jarid Margolin <jaridmargolin@gmail.com>",
+  "description": "Extensible async task queue.",
   "homepage": "https://github.com/jaridmargolin/task-queue.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jaridmargolin/task-queue.js"
-  },
-  "bugs": {
-    "url": "https://github.com/jaridmargolin/task-queue.js/issues"
-  },
-  "main": "build/task-queue.js",
-  "module": "build/es/index.js",
-  "esnext": "src/index.js",
+  "repository": "github:jaridmargolin/task-queue.js",
+  "license": "MIT",
+  "main": "dist/common/task-queue.js",
+  "module": "dist/es/task-queue.js",
+  "browser": "dist/task-queue.js",
   "scripts": {
-    "build": "neutrino build",
-    "view-build": "neutrino view-build",
-    "start": "neutrino test --watch",
-    "test": "neutrino test",
-    "view-cov": "neutrino view-cov",
-    "publish-cov": "neutrino publish-cov",
-    "build-docs": "neutrino build-docs",
-    "view-docs": "neutrino view-docs"
+    "build": "npm run build-lib && npm run build-docs",
+    "build-docs": "jsdoc -c ./jsdoc.config.js",
+    "build-lib": "rollup -c",
+    "format": "prettier-eslint --write \"**/*.js\"",
+    "lint": "eslint src test",
+    "prepublishOnly": "npm run build",
+    "publish-cov": "codecov",
+    "start": "jest --watch",
+    "test": "jest",
+    "view-cov": "opn ./coverage/lcov-report/index.html",
+    "view-docs": "opn ./docs/index.html"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
-    "neutrino": "^6.1.1",
-    "neutrino-preset-library": "0.3.0"
+    "babel-cli": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "codecov": "3.0.2",
+    "docdash": "^0.4.0",
+    "eslint": "5.0.1",
+    "eslint-config-standard": "11.0.0",
+    "eslint-plugin-import": "2.13.0",
+    "eslint-plugin-node": "6.0.1",
+    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-standard": "3.1.0",
+    "husky": "1.0.0-rc.9",
+    "jest": "23.2.0",
+    "jsdoc": "^3.5.5",
+    "lint-staged": "7.2.0",
+    "opn-cli": "^3.1.0",
+    "prettier-eslint-cli": "4.7.1",
+    "rollup": "^0.62.0",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-terser": "^1.0.1"
   }
 }
