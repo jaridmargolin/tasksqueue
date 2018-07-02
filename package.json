@@ -1,6 +1,6 @@
 {
   "name": "task-queue.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Jarid Margolin <jaridmargolin@gmail.com>",
   "description": "Extensible async task queue.",
   "homepage": "https://github.com/jaridmargolin/task-queue.js",
