@@ -8,7 +8,7 @@ import { terser } from 'rollup-plugin-terser'
 import babel from 'rollup-plugin-babel'
 
 /* -----------------------------------------------------------------------------
- * prettier config
+ * rollup config
  * -------------------------------------------------------------------------- */
 
 const sharedPlugins = [
@@ -45,7 +45,7 @@ export default [
   },
   {
     input: 'src/task-queue.js',
-    plugins: [terser()],
+    plugins: [...sharedPlugins, terser()],
     output: {
       file: 'dist/task-queue.min.js',
       format: 'umd',
