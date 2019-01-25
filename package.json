@@ -42,6 +42,6 @@
     "prettier-eslint-cli": "4.7.1",
     "rollup": "0.68.2",
     "rollup-plugin-babel": "4.3.2",
-    "rollup-plugin-terser": "4.0.2"
+    "rollup-plugin-terser": "4.0.3"
   }
 }
