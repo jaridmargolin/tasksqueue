@@ -20,7 +20,7 @@ const sharedPlugins = [
 
 export default [
   {
-    input: 'src/task-queue.js',
+    input: 'src/task-queue.ts',
     plugins: [...sharedPlugins],
     output: {
       file: 'dist/task-queue.js',
@@ -29,7 +29,7 @@ export default [
     }
   },
   {
-    input: 'src/task-queue.js',
+    input: 'src/task-queue.ts',
     plugins: [...sharedPlugins],
     output: {
       file: 'dist/common/task-queue.js',
@@ -37,7 +37,7 @@ export default [
     }
   },
   {
-    input: 'src/task-queue.js',
+    input: 'src/task-queue.ts',
     plugins: [...sharedPlugins],
     output: {
       file: 'dist/es/task-queue.js',
@@ -45,7 +45,7 @@ export default [
     }
   },
   {
-    input: 'src/task-queue.js',
+    input: 'src/task-queue.ts',
     plugins: [...sharedPlugins, terser()],
     output: {
       file: 'dist/task-queue.min.js',

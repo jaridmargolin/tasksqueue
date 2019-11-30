@@ -9,25 +9,28 @@
   "main": "dist/common/task-queue.js",
   "module": "dist/es/task-queue.js",
   "browser": "dist/task-queue.js",
+  "types": "dist/types/task-queue.d.ts",
   "scripts": {
+    "check-types": "tsc",
     "build": "npm run build-lib && npm run build-docs && npm run build-types",
-    "build-docs": "jsdoc -c ./jsdoc.config.js",
+    "build-docs": "typedoc ./src/task-queue.ts",
     "build-lib": "rollup -c",
-    "build-types": "tsc",
+    "build-types": "tsc -p tsconfig.build.json ",
     "format": "prettier-eslint --write \"**/*.js\"",
-    "lint": "eslint src test",
+    "lint": "eslint src",
     "prepublishOnly": "npm run build",
     "publish-cov": "codecov",
     "start": "jest --watch",
-    "test": "jest",
-    "view-cov": "opn ./coverage/lcov-report/index.html",
-    "view-docs": "opn ./docs/index.html"
+    "test": "npm run check-types && jest",
+    "view-cov": "open-cli ./coverage/lcov-report/index.html",
+    "view-docs": "open-cli ./docs/index.html"
   },
   "devDependencies": {
     "@babel/core": "7.7.4",
     "@babel/plugin-external-helpers": "7.7.4",
     "@babel/preset-env": "7.7.4",
     "@babel/preset-typescript": "7.7.4",
+    "@types/jest": "24.0.23",
     "babel-eslint": "10.0.3",
     "codecov": "4.0.0-0",
     "docdash": "1.1.1",
@@ -39,12 +42,13 @@
     "eslint-plugin-standard": "4.0.0",
     "husky": "1.3.1",
     "jest": "24.9.0",
-    "jsdoc": "3.6.3",
     "lint-staged": "9.5.0",
     "opn-cli": "5.0.0",
     "prettier-eslint-cli": "4.7.1",
     "rollup": "1.27.5",
     "rollup-plugin-babel": "4.3.3",
-    "rollup-plugin-terser": "5.1.2"
+    "rollup-plugin-terser": "5.1.2",
+    "typedoc": "0.15.3",
+    "typescript": "3.5.3"
   }
 }

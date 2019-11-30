@@ -1,13 +1,11 @@
 {
-  "files": ["./src/task-queue.ts"],
+  "include": ["src"],
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
     "target": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "outDir": "./dist/types"
+    "noEmit": true
   }
 }

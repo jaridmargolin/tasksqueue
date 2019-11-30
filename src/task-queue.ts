@@ -1,10 +1,29 @@
 'use strict'
 
 /* -----------------------------------------------------------------------------
+ * helpers
+ * -------------------------------------------------------------------------- */
+
+type PlainObject<Value = any> = Record<string | number | symbol, Value>
+
+/* -----------------------------------------------------------------------------
  * TaskQueue
  * -------------------------------------------------------------------------- */
 
-class TaskQueue {
+export type TaskHandler<Task extends PlainObject> = (task: Task) => any
+export type TaskQueueOptions<Task> = {
+  indexName?: keyof Task
+  shiftOnProcess?: boolean
+}
+
+export default class TaskQueue<Task extends PlainObject = PlainObject> {
+  taskHandler: TaskHandler<Task>
+  indexName: keyof Task
+  shiftOnProcess: boolean
+
+  tasks: Task[]
+  indexes: PlainObject<number>
+
   /**
    * @desc Extensible async task queue.
    *
@@ -13,15 +32,21 @@ class TaskQueue {
    *   task.fn(task.opts, next)
    * })
    *
-   * @param {Function} processFn - Function called when task is processed.
+   * @param taskHandler - Function called when task is processed.
+   * @param taskQueueOptions - TaskQueue configuration options.
    */
-  constructor (processFn) {
-    this.processFn = processFn
+  constructor (
+    taskHandler: TaskHandler<Task>,
+    taskQueueOptions: TaskQueueOptions<Task> = {}
+  ) {
+    const { indexName = 'id', shiftOnProcess = false } = taskQueueOptions
+
+    this.taskHandler = taskHandler
+    this.indexName = indexName
+    this.shiftOnProcess = shiftOnProcess
+
     this.tasks = []
     this.indexes = {}
-
-    // respect any values set in subclasses
-    this.indexName = this.indexName || 'id'
   }
 
   /**
@@ -30,15 +55,17 @@ class TaskQueue {
    * @example
    * queue.add({ 'id': 1, args: arguments }, true)
    *
-   * @param {Array|Object} tasks - An array or single task to add to queue.
+   * @param tasks - An array or single task to add to queue.
+   * @param processImmediately - Flag determing whether or not to
+   *   immediately "process" task.
    */
-  add (tasks, processTask) {
+  add (tasks: Task | Task[], processImmediately?: boolean) {
     const isEmpty = this.isEmpty()
     const result = Array.isArray(tasks)
       ? this._addTasks(tasks)
       : this._addTask(tasks)
 
-    if (isEmpty && processTask) {
+    if (isEmpty && processImmediately) {
       this.process()
     }
 
@@ -65,13 +92,12 @@ class TaskQueue {
   process () {
     const task = this.shiftOnProcess ? this._shift() : this.tasks[0]
 
-    this.processFn(task, () => {
-      if (!this.shiftOnProcess) {
-        this._shift()
-      }
-
-      return this.isEmpty() ? null : this.process()
-    })
+    if (typeof task !== 'undefined') {
+      Promise.resolve(this.taskHandler(task)).then(() => {
+        !this.shiftOnProcess && this._shift()
+        this.process()
+      })
+    }
   }
 
   /**
@@ -96,9 +122,9 @@ class TaskQueue {
    * @private
    * @desc Add item(s) to queue.
    *
-   * @param {Array} tasks - Loop over passed tasks abd add each to queue.
+   * @param tasks - Loop over passed tasks abd add each to queue.
    */
-  _addTasks (tasks) {
+  _addTasks (tasks: Task[]) {
     const added = []
     for (var i = 0, l = tasks.length; i < l; i++) {
       added.push(this._addTask(tasks[i]))
@@ -112,9 +138,9 @@ class TaskQueue {
    * @desc Add item to queue. Small wrapper around push that first checks
    *   if task is a duplicate.
    *
-   * @param {Object} task - A single task item. Can contain any desired properties.
+   * @param task - A single task item. Can contain any desired properties.
    */
-  _addTask (task) {
+  _addTask (task: Task) {
     if (!this._isDuplicate(task)) {
       this._push(task)
     }
@@ -127,9 +153,9 @@ class TaskQueue {
    * @desc Check if task is a duplicate. By default it checks against a map of
    *   index. Override if duplicate check requires additional logic.
    *
-   * @param {Object} task - A single task item.
+   * @param task - A single task item.
    */
-  _isDuplicate (task) {
+  _isDuplicate (task: Task) {
     return this.indexes.hasOwnProperty(task[this.indexName])
   }
 
@@ -137,9 +163,9 @@ class TaskQueue {
    * @private
    * @desc Push task object to tail of tasks list and add to indexes map.
    *
-   * @param {Object} task - A single task item.
+   * @param task - A single task item.
    */
-  _push (task) {
+  _push (task: Task) {
     const indexVal = this.tasks.push(task) - 1
 
     if (task.hasOwnProperty(this.indexName)) {
@@ -154,10 +180,8 @@ class TaskQueue {
    */
   _shift () {
     const task = this.tasks.shift()
-    delete this.indexes[task[this.indexName]]
+    task && delete this.indexes[task[this.indexName]]
 
     return task
   }
 }
-
-export default TaskQueue
