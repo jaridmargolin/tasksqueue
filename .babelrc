@@ -1,15 +1,16 @@
 {
   "env": {
     "development": {
-      "plugins": ["external-helpers"],
-      "presets": [["env", {
-        "modules": false,
-        "targets": { "browsers": [">0.25% in US"] }
-      }]]
+      "plugins": ["@babel/plugin-external-helpers"],
+      "presets": [
+        ["@babel/preset-env", {
+          "modules": false,
+          "targets": { "browsers": [">0.25% in US"] }
+        }]
+      ]
     },
     "test": {
-      "presets": [["env"]]
+      "presets": [["@babel/preset-env"]]
     }
   }
 }
-
