@@ -82,7 +82,13 @@ describe('task-queue.js', function () {
       done()
     }
 
-    queue.add([{ id: 1, val: 1 }, { id: 1, val: 2 }], true)
+    queue.add(
+      [
+        { id: 1, val: 1 },
+        { id: 1, val: 2 }
+      ],
+      true
+    )
     setTimeout(assertState, 100)
   })
 
@@ -101,7 +107,10 @@ describe('task-queue.js', function () {
   })
 
   test('Should clear queue and indexes.', function () {
-    queue.add([{ id: 1, val: 1 }, { id: 2, val: 2 }])
+    queue.add([
+      { id: 1, val: 1 },
+      { id: 2, val: 2 }
+    ])
     queue.clear()
 
     expect(queue.isEmpty()).toBe(true)

@@ -13,6 +13,7 @@ import babel from 'rollup-plugin-babel'
 
 const sharedPlugins = [
   babel({
+    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx'],
     exclude: 'node_modules/**'
   })
 ]
