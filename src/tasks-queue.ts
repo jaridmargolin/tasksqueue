@@ -7,16 +7,16 @@
 type PlainObject<Value = any> = Record<string | number | symbol, Value>
 
 /* -----------------------------------------------------------------------------
- * TaskQueue
+ * TasksQueue
  * -------------------------------------------------------------------------- */
 
 export type TaskHandler<Task extends PlainObject> = (task: Task) => any
-export type TaskQueueOptions<Task> = {
+export type TasksQueueOptions<Task> = {
   indexName?: keyof Task
   shiftOnProcess?: boolean
 }
 
-export default class TaskQueue<Task extends PlainObject = PlainObject> {
+export default class TasksQueue<Task extends PlainObject = PlainObject> {
   taskHandler: TaskHandler<Task>
   indexName: keyof Task
   shiftOnProcess: boolean
@@ -28,16 +28,16 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * @desc Extensible async task queue.
    *
    * @example
-   * const queue = new TaskQueue((task, next) => {
+   * const queue = new TasksQueue((task, next) => {
    *   task.fn(task.opts, next)
    * })
    *
    * @param taskHandler - Function called when task is processed.
-   * @param taskQueueOptions - TaskQueue configuration options.
+   * @param taskQueueOptions - TasksQueue configuration options.
    */
   constructor (
     taskHandler: TaskHandler<Task>,
-    taskQueueOptions: TaskQueueOptions<Task> = {}
+    taskQueueOptions: TasksQueueOptions<Task> = {}
   ) {
     const { indexName = 'id', shiftOnProcess = false } = taskQueueOptions
 

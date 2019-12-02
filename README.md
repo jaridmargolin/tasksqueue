@@ -1,29 +1,29 @@
-<h1>task-queue.js</h1>
+<h1>tasks-queue</h1>
 <div>
   <p>Extensible async task queue.</p>
   <div>
-    <a href="https://travis-ci.org/jaridmargolin/task-queue.js">
-      <img src="https://travis-ci.org/jaridmargolin/task-queue.js.svg?branch=master" alt="Build Status">
+    <a href="https://travis-ci.org/jaridmargolin/tasks-queue">
+      <img src="https://travis-ci.org/jaridmargolin/tasks-queue.svg?branch=master" alt="Build Status">
     </a>
-    <a href="https://codecov.io/gh/jaridmargolin/task-queue.js">
-      <img src="https://codecov.io/gh/jaridmargolin/task-queue.js/branch/master/graph/badge.svg" alt="Coverage Status"/>
+    <a href="https://codecov.io/gh/jaridmargolin/tasks-queue">
+      <img src="https://codecov.io/gh/jaridmargolin/tasks-queue/branch/master/graph/badge.svg" alt="Coverage Status"/>
     </a>
     <a href="http://standardjs.com/">
       <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide">
     </a>
   </div>
   <div>
-    <a href="https://npmjs.org/package/task-queue.js">
-      <img src="https://img.shields.io/npm/v/task-queue.js.svg" alt="NPM task-queue.js package">
+    <a href="https://npmjs.org/package/tasks-queue">
+      <img src="https://img.shields.io/npm/v/tasks-queue.svg" alt="NPM tasks-queue package">
     </a>
-    <a href="https://david-dm.org/jaridmargolin/task-queue.js">
-      <img src="https://david-dm.org/jaridmargolin/task-queue.js.svg" alt="Dependency Status">
+    <a href="https://david-dm.org/jaridmargolin/tasks-queue">
+      <img src="https://david-dm.org/jaridmargolin/tasks-queue.svg" alt="Dependency Status">
     </a>
-    <a href="https://david-dm.org/jaridmargolin/task-queue.js#info=devDependencies">
-      <img src="https://david-dm.org/jaridmargolin/task-queue.js/dev-status.svg" alt="devDependency Status">
+    <a href="https://david-dm.org/jaridmargolin/tasks-queue#info=devDependencies">
+      <img src="https://david-dm.org/jaridmargolin/tasks-queue/dev-status.svg" alt="devDependency Status">
     </a>
   </div>
-  <a href="http://jaridmargolin.github.io/task-queue.js">View Documentation</a>
+  <a href="http://jaridmargolin.github.io/tasks-queue">View Documentation</a>
 </div>
 <br>
 
