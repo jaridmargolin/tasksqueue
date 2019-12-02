@@ -1,29 +1,29 @@
-<h1>task-queue.js</h1>
+<h1>tasksqueue</h1>
 <div>
   <p>Extensible async task queue.</p>
   <div>
-    <a href="https://travis-ci.org/jaridmargolin/task-queue.js">
-      <img src="https://travis-ci.org/jaridmargolin/task-queue.js.svg?branch=master" alt="Build Status">
+    <a href="https://travis-ci.org/jaridmargolin/tasksqueue">
+      <img src="https://travis-ci.org/jaridmargolin/tasksqueue.svg?branch=master" alt="Build Status">
     </a>
-    <a href="https://codecov.io/gh/jaridmargolin/task-queue.js">
-      <img src="https://codecov.io/gh/jaridmargolin/task-queue.js/branch/master/graph/badge.svg" alt="Coverage Status"/>
+    <a href="https://codecov.io/gh/jaridmargolin/tasksqueue">
+      <img src="https://codecov.io/gh/jaridmargolin/tasksqueue/branch/master/graph/badge.svg" alt="Coverage Status"/>
     </a>
     <a href="http://standardjs.com/">
       <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide">
     </a>
   </div>
   <div>
-    <a href="https://npmjs.org/package/task-queue.js">
-      <img src="https://img.shields.io/npm/v/task-queue.js.svg" alt="NPM task-queue.js package">
+    <a href="https://npmjs.org/package/tasksqueue">
+      <img src="https://img.shields.io/npm/v/tasksqueue.svg" alt="NPM tasksqueue package">
     </a>
-    <a href="https://david-dm.org/jaridmargolin/task-queue.js">
-      <img src="https://david-dm.org/jaridmargolin/task-queue.js.svg" alt="Dependency Status">
+    <a href="https://david-dm.org/jaridmargolin/tasksqueue">
+      <img src="https://david-dm.org/jaridmargolin/tasksqueue.svg" alt="Dependency Status">
     </a>
-    <a href="https://david-dm.org/jaridmargolin/task-queue.js#info=devDependencies">
-      <img src="https://david-dm.org/jaridmargolin/task-queue.js/dev-status.svg" alt="devDependency Status">
+    <a href="https://david-dm.org/jaridmargolin/tasksqueue#info=devDependencies">
+      <img src="https://david-dm.org/jaridmargolin/tasksqueue/dev-status.svg" alt="devDependency Status">
     </a>
   </div>
-  <a href="http://jaridmargolin.github.io/task-queue.js">View Documentation</a>
+  <a href="http://jaridmargolin.github.io/tasksqueue">View Documentation</a>
 </div>
 <br>
 

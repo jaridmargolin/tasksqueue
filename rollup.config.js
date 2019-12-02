@@ -20,37 +20,37 @@ const sharedPlugins = [
 
 export default [
   {
-    input: 'src/task-queue.ts',
+    input: 'src/tasksqueue.ts',
     plugins: [...sharedPlugins],
     output: {
-      file: 'dist/task-queue.js',
+      file: 'dist/tasksqueue',
       format: 'umd',
-      name: 'TaskQueue'
+      name: 'TasksQueue'
     }
   },
   {
-    input: 'src/task-queue.ts',
+    input: 'src/tasksqueue.ts',
     plugins: [...sharedPlugins],
     output: {
-      file: 'dist/common/task-queue.js',
+      file: 'dist/common/tasksqueue',
       format: 'cjs'
     }
   },
   {
-    input: 'src/task-queue.ts',
+    input: 'src/tasksqueue.ts',
     plugins: [...sharedPlugins],
     output: {
-      file: 'dist/es/task-queue.js',
+      file: 'dist/es/tasksqueue',
       format: 'es'
     }
   },
   {
-    input: 'src/task-queue.ts',
+    input: 'src/tasksqueue.ts',
     plugins: [...sharedPlugins, terser()],
     output: {
-      file: 'dist/task-queue.min.js',
+      file: 'dist/tasksqueue.min.js',
       format: 'umd',
-      name: 'TaskQueue'
+      name: 'TasksQueue'
     }
   }
 ]

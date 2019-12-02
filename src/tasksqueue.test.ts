@@ -4,20 +4,20 @@
  * dependencies
  * -------------------------------------------------------------------------- */
 
-import TaskQueue from './task-queue'
+import TasksQueue from './tasksqueue'
 
 /* -----------------------------------------------------------------------------
  * test
  * -------------------------------------------------------------------------- */
 
-describe('task-queue.js', function () {
+describe('tasksqueue', function () {
   let processed: number[]
-  let queue: TaskQueue<{ val: number; id?: number }>
+  let queue: TasksQueue<{ val: number; id?: number }>
 
   beforeEach(function () {
     processed = []
 
-    queue = new TaskQueue(task => {
+    queue = new TasksQueue(task => {
       processed.push(task.val)
       return new Promise(resolve => setTimeout(resolve, 0))
     })
