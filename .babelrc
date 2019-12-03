@@ -1,7 +1,6 @@
 {
   "env": {
     "development": {
-      "plugins": ["@babel/plugin-external-helpers"],
       "presets": [
         ["@babel/preset-env", {
           "modules": false,
