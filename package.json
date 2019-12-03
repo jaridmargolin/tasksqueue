@@ -6,9 +6,9 @@
   "homepage": "https://github.com/jaridmargolin/task-queue",
   "repository": "github:jaridmargolin/task-queue",
   "license": "MIT",
-  "main": "dist/common/task-queue",
-  "module": "dist/es/task-queue",
-  "browser": "dist/task-queue",
+  "main": "dist/common/task-queue.js",
+  "module": "dist/es/task-queue.js",
+  "browser": "dist/task-queue.js",
   "types": "dist/types/task-queue.d.ts",
   "scripts": {
     "check-types": "tsc",
