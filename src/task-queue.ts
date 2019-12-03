@@ -82,7 +82,7 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * @param processImmediately - Flag determing whether or not to
    *   immediately "process" task.
    */
-  add (tasks: Task | Task[], processImmediately?: boolean) {
+  add (tasks: Task | Task[], processImmediately: boolean = false) {
     const isEmpty = this.isEmpty()
     const result = Array.isArray(tasks)
       ? this._addTasks(tasks)
