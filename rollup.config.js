@@ -25,7 +25,8 @@ export default [
     output: {
       file: 'dist/task-queue.js',
       format: 'umd',
-      name: 'TaskQueue'
+      name: 'TaskQueue',
+      exports: 'named'
     }
   },
   {
@@ -33,7 +34,8 @@ export default [
     plugins: [...sharedPlugins],
     output: {
       file: 'dist/common/task-queue.js',
-      format: 'cjs'
+      format: 'cjs',
+      exports: 'named'
     }
   },
   {
@@ -50,7 +52,8 @@ export default [
     output: {
       file: 'dist/task-queue.min.js',
       format: 'umd',
-      name: 'TaskQueue'
+      name: 'TaskQueue',
+      exports: 'named'
     }
   }
 ]
