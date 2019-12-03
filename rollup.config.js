@@ -23,7 +23,7 @@ export default [
     input: 'src/task-queue.ts',
     plugins: [...sharedPlugins],
     output: {
-      file: 'dist/task-queue',
+      file: 'dist/task-queue.js',
       format: 'umd',
       name: 'TaskQueue'
     }
@@ -32,7 +32,7 @@ export default [
     input: 'src/task-queue.ts',
     plugins: [...sharedPlugins],
     output: {
-      file: 'dist/common/task-queue',
+      file: 'dist/common/task-queue.js',
       format: 'cjs'
     }
   },
@@ -40,7 +40,7 @@ export default [
     input: 'src/task-queue.ts',
     plugins: [...sharedPlugins],
     output: {
-      file: 'dist/es/task-queue',
+      file: 'dist/es/task-queue.js',
       format: 'es'
     }
   },
