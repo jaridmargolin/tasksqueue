@@ -146,8 +146,7 @@ describe('task-queue', function() {
   })
 
   test('Should clear on process when flag set.', () => {
-    const queue = new TaskQueue(() => null)
-    queue.shiftOnProcess = true
+    const queue = new TaskQueue(() => null, { shiftOnProcess: true })
     queue.add({ val: 1 }, true)
 
     expect(queue.tasks).toEqual([])
