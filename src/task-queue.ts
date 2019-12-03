@@ -37,14 +37,9 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
   tasks: Task[]
   indexes: PlainObject<number>
 
-  /** @private */
-  _taskHandler: TaskHandler<Task>
-
-  /** @private */
-  _indexKey: keyof Task
-
-  /** @private */
-  _shiftOnProcess: boolean
+  private _taskHandler: TaskHandler<Task>
+  private _indexKey: keyof Task
+  private _shiftOnProcess: boolean
 
   /**
    * @desc Extensible async task queue.
@@ -182,12 +177,11 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * ------------------------------------------------------------------------ */
 
   /**
-   * @private
    * @desc Add item(s) to queue.
    *
    * @param tasks - Loop over passed tasks abd add each to queue.
    */
-  _addTasks (tasks: Task[]) {
+  private _addTasks (tasks: Task[]) {
     const added = []
     for (var i = 0, l = tasks.length; i < l; i++) {
       added.push(this._addTask(tasks[i]))
@@ -197,13 +191,12 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
   }
 
   /**
-   * @private
    * @desc Add item to queue. Small wrapper around push that first checks
    *   if task is a duplicate.
    *
    * @param task - A single task item. Can contain any desired properties.
    */
-  _addTask (task: Task) {
+  private _addTask (task: Task) {
     if (!this._isDuplicate(task)) {
       this._push(task)
     }
@@ -212,23 +205,21 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
   }
 
   /**
-   * @private
    * @desc Check if task is a duplicate. By default it checks against a map of
    *   index. Override if duplicate check requires additional logic.
    *
    * @param task - A single task item.
    */
-  _isDuplicate (task: Task) {
+  private _isDuplicate (task: Task) {
     return this.indexes.hasOwnProperty(task[this._indexKey])
   }
 
   /**
-   * @private
    * @desc Push task object to tail of tasks list and add to indexes map.
    *
    * @param task - A single task item.
    */
-  _push (task: Task) {
+  private _push (task: Task) {
     const indexVal = this.tasks.push(task) - 1
 
     if (task.hasOwnProperty(this._indexKey)) {
@@ -237,11 +228,10 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
   }
 
   /**
-   * @private
    * @desc Remove and return the task at the head of the tasks list. Also removes
    *   task from indexes map.
    */
-  _shift () {
+  private _shift () {
     const task = this.tasks.shift()
     task && delete this.indexes[task[this._indexKey]]
 
@@ -249,10 +239,9 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
   }
 
   /**
-   * @private
    * @desc Continue to next task
    */
-  _next () {
+  private _next () {
     !this._shiftOnProcess && this._shift()
 
     if (this.status === TaskQueueStatus.PROCESSING) {
