@@ -3,5 +3,15 @@ node_js:
   - '12'
   - '10'
   - '8'
-after_success:
-  - npm run publish-cov
+script:
+  - yarn test
+  - yarn build
+after_script:
+  - yarn publish-cov
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  on:
+    branch: master
