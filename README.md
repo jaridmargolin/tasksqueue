@@ -1,5 +1,5 @@
-<h1>task-queue</h1>
-<div>
+<h1 align="center">task-queue</h1>
+<div align="center">
   <p>Extensible async task queue.</p>
   <div>
     <a href="https://travis-ci.org/jaridmargolin/task-queue">
@@ -23,9 +23,11 @@
       <img src="https://david-dm.org/jaridmargolin/task-queue/dev-status.svg" alt="devDependency Status">
     </a>
   </div>
-  <a href="http://jaridmargolin.github.io/task-queue">View Documentation</a>
 </div>
 <br>
+<div align="center">
+<a href="http://jaridmargolin.github.io/task-queue">View Documentation</a>
+</div>
 
 ## License
 
