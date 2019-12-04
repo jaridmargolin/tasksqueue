@@ -12,11 +12,11 @@ type PlainObject<Value = any> = Record<string | number | symbol, Value>
 
 export type TaskHandler<Task extends PlainObject> = (task: Task) => any
 
-export type TaskQueueOptions<Task> = {
+export interface TaskQueueSettings<Task> {
   /** Key used to index tasks within queue. */
-  indexKey?: keyof Task
+  indexKey: keyof Task
   /** Flag to determine if processing tasks will be removed from queue eagerly. */
-  shiftOnProcess?: boolean
+  shiftOnProcess: boolean
 }
 
 export enum TaskQueueStatus {
@@ -33,13 +33,15 @@ export enum TaskQueueStatus {
 }
 
 export default class TaskQueue<Task extends PlainObject = PlainObject> {
-  status: TaskQueueStatus
-  tasks: Task[]
-  indexes: PlainObject<number>
+  status: TaskQueueStatus = TaskQueueStatus.READY
+  tasks: Task[] = []
+  indexes: PlainObject<number> = {}
 
-  private _taskHandler: TaskHandler<Task>
-  private _indexKey: keyof Task
-  private _shiftOnProcess: boolean
+  private _handler: TaskHandler<Task>
+  private _settings: TaskQueueSettings<Task> = {
+    indexKey: 'id',
+    shiftOnProcess: false
+  }
 
   /**
    * @desc Extensible async task queue.
@@ -50,21 +52,14 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * })
    *
    * @param taskHandler - Function called when task is processed.
-   * @param taskQueueOptions - TaskQueue configuration options.
+   * @param taskQueueSettings - TaskQueue configuration options.
    */
   constructor (
     taskHandler: TaskHandler<Task>,
-    taskQueueOptions: TaskQueueOptions<Task> = {}
+    taskQueueSettings: Partial<TaskQueueSettings<Task>> = {}
   ) {
-    const { indexKey = 'id', shiftOnProcess = false } = taskQueueOptions
-
-    this._taskHandler = taskHandler
-    this._indexKey = indexKey
-    this._shiftOnProcess = shiftOnProcess
-
-    this.status = TaskQueueStatus.READY
-    this.tasks = []
-    this.indexes = {}
+    this._handler = taskHandler
+    Object.assign(this._settings, taskQueueSettings)
   }
 
   /**
@@ -112,13 +107,13 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
       this.status === TaskQueueStatus.READY ||
       this.status === TaskQueueStatus.PROCESSING
     ) {
-      const task = this._shiftOnProcess ? this._shift() : this.tasks[0]
+      const task = this._settings.shiftOnProcess ? this._shift() : this.tasks[0]
 
       if (typeof task === 'undefined') {
         this.status = TaskQueueStatus.READY
       } else {
         this.status = TaskQueueStatus.PROCESSING
-        Promise.resolve(this._taskHandler(task)).then(() => this._next())
+        Promise.resolve(this._handler(task)).then(() => this._next())
       }
     } else if (this.status === TaskQueueStatus.PAUSED_READY) {
       this.status = TaskQueueStatus.PAUSED_PENDING
@@ -166,7 +161,7 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    */
   clear () {
     for (var i = 0, l = this.tasks.length; i < l; i++) {
-      delete this.indexes[this.tasks[i][this._indexKey]]
+      delete this.indexes[this.tasks[i][this._settings.indexKey]]
     }
 
     this.tasks.length = 0
@@ -211,7 +206,7 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * @param task - A single task item.
    */
   private _isDuplicate (task: Task) {
-    return this.indexes.hasOwnProperty(task[this._indexKey])
+    return this.indexes.hasOwnProperty(task[this._settings.indexKey])
   }
 
   /**
@@ -222,8 +217,8 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
   private _push (task: Task) {
     const indexVal = this.tasks.push(task) - 1
 
-    if (task.hasOwnProperty(this._indexKey)) {
-      this.indexes[task[this._indexKey]] = indexVal
+    if (task.hasOwnProperty(this._settings.indexKey)) {
+      this.indexes[task[this._settings.indexKey]] = indexVal
     }
   }
 
@@ -233,7 +228,7 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    */
   private _shift () {
     const task = this.tasks.shift()
-    task && delete this.indexes[task[this._indexKey]]
+    task && delete this.indexes[task[this._settings.indexKey]]
 
     return task
   }
@@ -242,7 +237,7 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * @desc Continue to next task
    */
   private _next () {
-    !this._shiftOnProcess && this._shift()
+    !this._settings.shiftOnProcess && this._shift()
 
     if (this.status === TaskQueueStatus.PROCESSING) {
       this.process()
