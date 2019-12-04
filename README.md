@@ -14,7 +14,7 @@
   </div>
   <div>
     <a href="https://npmjs.org/package/task-queue">
-      <img src="https://img.shields.io/npm/v/task-queue.svg" alt="NPM task-queue package">
+      <img src="https://img.shields.io/npm/v/@inventory/task-queue.svg" alt="NPM task-queue package">
     </a>
     <a href="https://david-dm.org/jaridmargolin/task-queue">
       <img src="https://david-dm.org/jaridmargolin/task-queue.svg" alt="Dependency Status">
