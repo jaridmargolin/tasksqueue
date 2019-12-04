@@ -4,48 +4,18 @@
  * dependencies
  * -------------------------------------------------------------------------- */
 
+// 3rd party
+import waitFor from 'p-wait-for'
+import defer from 'p-defer'
+
 // lib
 import TaskQueue, { TaskQueueStatus } from './task-queue'
-
-/* -----------------------------------------------------------------------------
- * helpers
- * -------------------------------------------------------------------------- */
-
-const waitUntilQueueStatus = (queue: TaskQueue, status: TaskQueueStatus) =>
-  new Promise((resolve, reject) => {
-    const interval = setInterval(() => {
-      if (queue.status === status) {
-        clearInterval(interval)
-        resolve()
-      }
-    }, 0)
-  })
-
-const createDeferred = <ValueType = any>() => {
-  let resolveImmediately = false
-  let retValue: ValueType
-
-  const resolve = (val: ValueType) => {
-    resolveImmediately = true
-    retValue = val
-  }
-
-  const methods = { resolve }
-  const deferred: any = new Promise<ValueType>(res => {
-    methods.resolve = res
-    if (resolveImmediately) {
-      res(retValue)
-    }
-  })
-
-  return Object.assign(deferred, methods)
-}
 
 /* -----------------------------------------------------------------------------
  * test
  * -------------------------------------------------------------------------- */
 
-describe('task-queue', function() {
+describe('task-queue', function () {
   test('Should add task to head of queue.', () => {
     const queue = new TaskQueue(() => null)
     const task = { val: 1 }
@@ -71,7 +41,7 @@ describe('task-queue', function() {
     const queue = new TaskQueue(task => processed.push(task.val))
     queue.add({ val: 1 }, true)
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1])
@@ -83,7 +53,7 @@ describe('task-queue', function() {
     queue.add({ val: 1 }, true)
     queue.add({ val: 2 })
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1, 2])
@@ -94,7 +64,7 @@ describe('task-queue', function() {
     const queue = new TaskQueue(task => processed.push(task.val))
     queue.add([{ val: 1 }, { val: 2 }], true)
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1, 2])
@@ -112,7 +82,7 @@ describe('task-queue', function() {
       true
     )
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1])
@@ -124,9 +94,9 @@ describe('task-queue', function() {
     const queue = new TaskQueue(task => processed.push(task.val))
     queue.add({ val: 1 }, true)
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
     queue.add({ val: 2 })
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(false)
     expect(processed).toEqual([1])
@@ -161,7 +131,7 @@ describe('task-queue', function() {
     queue.pause()
     queue.resume()
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(false)
     expect(processed).toEqual([])
@@ -169,14 +139,14 @@ describe('task-queue', function() {
     queue.pause()
     queue.process()
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.PAUSED_PENDING)
+    await waitFor(() => queue.status === TaskQueueStatus.PAUSED_PENDING)
 
     expect(queue.isEmpty()).toBe(false)
     expect(processed).toEqual([])
 
     queue.resume()
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1, 2])
@@ -189,14 +159,14 @@ describe('task-queue', function() {
     queue.add([{ val: 1 }, { val: 2 }], true)
     queue.pause()
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.PAUSED_PENDING)
+    await waitFor(() => queue.status === TaskQueueStatus.PAUSED_PENDING)
 
     expect(queue.isEmpty()).toBe(false)
     expect(processed).toEqual([1])
 
     queue.resume()
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1, 2])
@@ -205,15 +175,15 @@ describe('task-queue', function() {
   test('Should continue processing queue (last task incomplete).', async () => {
     const processed: number[] = []
     const queue = new TaskQueue(task =>
-      task.then((val: number) => processed.push(val))
+      task.promise.then((val: number) => processed.push(val))
     )
 
-    const tasks = [createDeferred(), createDeferred()]
+    const tasks = [defer(), defer()]
 
     queue.add(tasks, true)
     queue.pause()
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.PAUSED_PROCESSING)
+    await waitFor(() => queue.status === TaskQueueStatus.PAUSED_PROCESSING)
 
     expect(queue.isEmpty()).toBe(false)
     expect(processed).toEqual([])
@@ -222,7 +192,7 @@ describe('task-queue', function() {
     tasks[0].resolve(1)
     tasks[1].resolve(2)
 
-    await waitUntilQueueStatus(queue, TaskQueueStatus.READY)
+    await waitFor(() => queue.status === TaskQueueStatus.READY)
 
     expect(queue.isEmpty()).toBe(true)
     expect(processed).toEqual([1, 2])
