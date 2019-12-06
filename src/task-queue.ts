@@ -20,20 +20,18 @@ export interface TaskQueueSettings<Task> {
 }
 
 export enum TaskQueueStatus {
-  /** Ready to begin processing queue. */
-  READY,
+  /** Wairing for tasks to process. */
+  WAITING,
   /** Actively processing queue. */
   PROCESSING,
-  /** Paused while in READY state. */
-  PAUSED_READY,
-  /** Paused while processing queue. */
-  PAUSED_PROCESSING,
-  /** Paused with an immediate process call pending. */
-  PAUSED_PENDING
+  /** Processing paused. */
+  PAUSED,
+  /** Paused with an async task still being proessed. */
+  PAUSED_PROCESSING
 }
 
 export default class TaskQueue<Task extends PlainObject = PlainObject> {
-  status: TaskQueueStatus = TaskQueueStatus.READY
+  status: TaskQueueStatus = TaskQueueStatus.WAITING
   tasks: Task[] = []
   indexes: PlainObject<number> = {}
 
@@ -69,16 +67,14 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * queue.add({ 'id': 1, args: arguments }, true)
    *
    * @param tasks - An array or single task to add to queue.
-   * @param processImmediately - Flag determing whether or not to
-   *   immediately "process" task.
    */
-  add (tasks: Task | Task[], processImmediately: boolean = false) {
+  add (tasks: Task | Task[]) {
     const isEmpty = this.isEmpty()
     const result = Array.isArray(tasks)
       ? this._addTasks(tasks)
       : this._addTask(tasks)
 
-    if (isEmpty && processImmediately) {
+    if (isEmpty) {
       this.process()
     }
 
@@ -103,20 +99,13 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * queue.process()
    */
   process () {
-    if (
-      this.status === TaskQueueStatus.READY ||
-      this.status === TaskQueueStatus.PROCESSING
-    ) {
+    if (this.status === TaskQueueStatus.WAITING) {
       const task = this._settings.shiftOnProcess ? this._shift() : this.tasks[0]
 
-      if (typeof task === 'undefined') {
-        this.status = TaskQueueStatus.READY
-      } else {
+      if (typeof task !== 'undefined') {
         this.status = TaskQueueStatus.PROCESSING
         Promise.resolve(this._handler(task)).then(() => this._next())
       }
-    } else if (this.status === TaskQueueStatus.PAUSED_READY) {
-      this.status = TaskQueueStatus.PAUSED_PENDING
     }
   }
 
@@ -128,11 +117,10 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * queue.pause()
    */
   pause () {
-    if (this.status === TaskQueueStatus.PROCESSING) {
-      this.status = TaskQueueStatus.PAUSED_PROCESSING
-    } else if (this.status === TaskQueueStatus.READY) {
-      this.status = TaskQueueStatus.PAUSED_READY
-    }
+    this.status =
+      this.status === TaskQueueStatus.PROCESSING
+        ? TaskQueueStatus.PAUSED_PROCESSING
+        : TaskQueueStatus.PAUSED
   }
 
   /**
@@ -143,13 +131,11 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
    * queue.resume()
    */
   resume () {
-    if (this.status === TaskQueueStatus.PAUSED_PENDING) {
-      this.status = TaskQueueStatus.PROCESSING
+    if (this.status === TaskQueueStatus.PAUSED) {
+      this.status = TaskQueueStatus.WAITING
       this.process()
     } else if (this.status === TaskQueueStatus.PAUSED_PROCESSING) {
       this.status = TaskQueueStatus.PROCESSING
-    } else if (this.status === TaskQueueStatus.PAUSED_READY) {
-      this.status = TaskQueueStatus.READY
     }
   }
 
@@ -240,9 +226,10 @@ export default class TaskQueue<Task extends PlainObject = PlainObject> {
     !this._settings.shiftOnProcess && this._shift()
 
     if (this.status === TaskQueueStatus.PROCESSING) {
+      this.status = TaskQueueStatus.WAITING
       this.process()
-    } else {
-      this.status = TaskQueueStatus.PAUSED_PENDING
+    } else if (this.status === TaskQueueStatus.PAUSED_PROCESSING) {
+      this.status = TaskQueueStatus.PAUSED
     }
   }
 }
