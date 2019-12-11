@@ -16,7 +16,7 @@
     "build-docs": "typedoc ./src/task-queue.ts",
     "build-lib": "rollup -c",
     "build-types": "tsc -p tsconfig.build.json ",
-    "format": "prettier-eslint --write \"**/*.js\"",
+    "format": "prettier-eslint --write \"**/*.ts\"",
     "lint": "eslint src",
     "prepublishOnly": "yarn build",
     "publish-cov": "codecov",
