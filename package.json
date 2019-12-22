@@ -1,6 +1,6 @@
 {
   "name": "@inventory/task-queue",
-  "version": "2.0.0-beta.6",
+  "version": "2.0.0-beta.7",
   "author": "Jarid Margolin <jaridmargolin@gmail.com>",
   "description": "Extensible async task queue.",
   "homepage": "https://github.com/jaridmargolin/task-queue",
