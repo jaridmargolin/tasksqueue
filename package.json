@@ -25,11 +25,16 @@
     "view-cov": "open-cli ./coverage/lcov-report/index.html",
     "view-docs": "open-cli ./docs/index.html"
   },
+  "dependencies": {
+    "core-js": "^3.6.0"
+  },
   "devDependencies": {
     "@babel/core": "7.7.7",
     "@babel/plugin-proposal-class-properties": "7.7.4",
     "@babel/preset-env": "7.7.7",
     "@babel/preset-typescript": "7.7.7",
+    "@rollup/plugin-commonjs": "11.0.0",
+    "@rollup/plugin-node-resolve": "6.0.0",
     "@types/jest": "24.0.24",
     "@typescript-eslint/eslint-plugin": "2.12.0",
     "@typescript-eslint/parser": "2.12.0",
